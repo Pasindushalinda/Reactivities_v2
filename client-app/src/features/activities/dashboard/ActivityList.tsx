@@ -7,7 +7,10 @@ interface Props {
     selectActivity: (id: string) => void
 }
 
-export default function ({ activities,selectActivity }: Props) {
+export default function ({
+    activities,
+    selectActivity,
+}: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -21,7 +24,7 @@ export default function ({ activities,selectActivity }: Props) {
                                 <div>{activity.city}, {activity.category}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={()=>selectActivity(activity.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => selectActivity(activity.id)}  floated='right' content='View' color='blue' />
                                 <Label basic content={activity.category} />
                             </Item.Extra>
                         </Item.Content>
