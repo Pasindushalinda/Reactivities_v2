@@ -1,14 +1,17 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Container } from 'semantic-ui-react';
+import { Button, Container } from 'semantic-ui-react';
 import { Activity } from '../Model/activity';
 import NavBar from '../layouts/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import { v4 as uuid } from 'uuid';
 import agent from '../api/agent';
 import LoadingComponent from '../layouts/LoadingComponent';
-import axios from 'axios';
+import { useStore } from '../store/store';
+import { observer } from 'mobx-react-lite';
 
 function App() {
+  const { activityStore } = useStore();
+
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
@@ -97,4 +100,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);
