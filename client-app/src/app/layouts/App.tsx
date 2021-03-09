@@ -19,33 +19,25 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    agent.Activities.list().then((response) => {
-      let activities: Activity[] = [];
-      response.forEach(activity => {
-        activity.date = activity.date.split('T')[0];
-        activities.push(activity);
-      })
-      setActivities(activities);
-      setLoading(false);
-    })
-  }, [])
+    activityStore.loadingActivities();
+  }, [activityStore])
 
-  function handleSelectActivity(id: string) {
-    setSelectedActivity(activities.find(x => x.id === id));
-  }
+  // function handleSelectActivity(id: string) {
+  //   setSelectedActivity(activities.find(x => x.id === id));
+  // }
 
-  function handleCancelSelectActivity() {
-    setSelectedActivity(undefined);
-  }
+  // function handleCancelSelectActivity() {
+  //   setSelectedActivity(undefined);
+  // }
 
-  function handleFormOpen(id?: string) {
-    id ? handleSelectActivity(id) : handleCancelSelectActivity();
-    setEditMode(true);
-  }
+  // function handleFormOpen(id?: string) {
+  //   id ? handleSelectActivity(id) : handleCancelSelectActivity();
+  //   setEditMode(true);
+  // }
 
-  function handleFormClose() {
-    setEditMode(false);
-  }
+  // function handleFormClose() {
+  //   setEditMode(false);
+  // }
 
   function handleCreateOrEditActivity(activity: Activity) {
     setSubmitting(true);
@@ -76,20 +68,14 @@ function App() {
     })
   }
 
-  if (loading) return <LoadingComponent />
+  if (activityStore.loadingInitials) return <LoadingComponent />
 
   return (
     <Fragment>
-      <NavBar openForm={handleFormOpen} />
+      <NavBar />
       <Container style={{ marginTop: '7em' }}>
         <ActivityDashboard
-          activities={activities}
-          selectedActivity={selectedActivity}
-          selectActivity={handleSelectActivity}
-          cancelselectActivity={handleCancelSelectActivity}
-          editMode={editMode}
-          openForm={handleFormOpen}
-          closeForm={handleFormClose}
+          activities={activityStore.activities}
           createOrEdit={handleCreateOrEditActivity}
           deleteActivity={handleDeleteActivity}
           submitting={submitting}
