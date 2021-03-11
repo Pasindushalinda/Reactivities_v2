@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { SyntheticEvent, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../app/store/store';
 
@@ -29,7 +30,7 @@ export default observer(function () {
                             </Item.Description>
                             <Item.Extra>
                                 <Button
-                                    onClick={() => activityStore.selectActivity(activity.id)}
+                                    as={NavLink} to={`/activities/${activity.id}`}
                                     floated='right'
                                     content='View'
                                     color='blue'
