@@ -4,9 +4,6 @@ import { Grid, GridColumn } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layouts/LoadingComponent';
 import { useStore } from '../../../app/store/store';
 import ActivityList from '../dashboard/ActivityList';
-import ActivityDetails from '../details/ActivityDetails';
-import ActivityForm from '../forms/ActivityForm';
-
 
 export default observer(function ActivityDashboard() {
 
@@ -25,10 +22,7 @@ export default observer(function ActivityDashboard() {
                 <ActivityList />
             </GridColumn>
             <GridColumn width='6'>
-                {selectedActivity && !editMode &&
-                    <ActivityDetails />}
-                {editMode &&
-                    <ActivityForm />}
+                <h2>Activity filters</h2>
             </GridColumn>
         </Grid>
     )

@@ -21,6 +21,7 @@ export default class ActivityStore {
   }
 
   loadingActivities = async () => {
+    this.loadingInitials = true;
     try {
       const activities = await agent.Activities.list();
       activities.forEach((activity) => {
@@ -37,12 +38,17 @@ export default class ActivityStore {
     let activity = this.getActivity(id);
     if (activity) {
       this.selectedActivity = activity;
+      return activity;
     } else {
       this.loadingInitials = true;
       try {
         activity = await agent.Activities.details(id);
         this.setActivity(activity);
+        runInAction(() => {
+          this.selectedActivity = activity;
+        });
         this.setLoadingInitials(false);
+        return activity;
       } catch (error) {
         console.log(error);
         this.setLoadingInitials(false);
@@ -62,23 +68,6 @@ export default class ActivityStore {
   setLoadingInitials = (state: boolean) => {
     this.loadingInitials = state;
   };
-
-  // selectActivity = (id: string) => {
-  //   this.selectedActivity = this.activityRegistry.get(id);
-  // };
-
-  // cancelSelectedActivity = () => {
-  //   this.selectedActivity = undefined;
-  // };
-
-  // openForm = (id?: string) => {
-  //   id ? this.selectActivity(id) : this.cancelSelectedActivity();
-  //   this.editMode = true;
-  // };
-
-  // closeForm = () => {
-  //   this.editMode = false;
-  // };
 
   createActivity = async (activity: Activity) => {
     this.loading = true;
