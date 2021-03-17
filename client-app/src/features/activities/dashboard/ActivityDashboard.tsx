@@ -8,13 +8,13 @@ import ActivityList from '../dashboard/ActivityList';
 export default observer(function ActivityDashboard() {
 
     const { activityStore } = useStore();
-    const { selectedActivity, editMode } = activityStore;
+    const { loadingInitials, loadingActivities, activityRegistry } = activityStore;
 
     useEffect(() => {
-        activityStore.loadingActivities();
-    }, [activityStore])
+        if (activityRegistry.size <= 1) loadingActivities();
+    }, [activityRegistry.size, loadingActivities])
 
-    if (activityStore.loadingInitials) return <LoadingComponent />
+    if (loadingInitials) return <LoadingComponent />
 
     return (
         <Grid>
