@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css'
 import { store, StoreContext } from './app/store/store';
 import { BrowserRouter } from 'react-router-dom';
+import 'react-calendar/dist/Calendar.css';
 
 ReactDOM.render(
 
