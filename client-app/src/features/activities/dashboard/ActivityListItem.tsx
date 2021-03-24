@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Button, Icon, Item, Segment } from 'semantic-ui-react';
 import { Activity } from '../../../app/Model/activity';
 import { useStore } from '../../../app/store/store';
 
