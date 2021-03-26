@@ -1,23 +1,39 @@
 import { Activity } from './../Model/activity';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { error } from 'node:console';
+import { toast } from 'react-toastify';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
-      setTimeout(resolve, delay)
-  })
-}
+    setTimeout(resolve, delay);
+  });
+};
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
-axios.interceptors.response.use(async response => {
-  try {
-      await sleep(1000);
-      return response;
-  } catch (error) {
-      console.log(error);
-      return await Promise.reject(error);
+axios.interceptors.response.use(
+  async (response) => {
+    await sleep(1000);
+    return response;
+  },
+  (error: AxiosError) => {
+    const { data, status } = error.response!;
+    switch (status) {
+      case 400:
+        toast.error('bad request');
+        break;
+      case 401:
+        toast.error('unathorized');
+        break;
+      case 404:
+        toast.error('not-found');
+        break;
+      case 500:
+        toast.error('server error');
+    }
+    return Promise.reject(error);
   }
-})
+);
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
