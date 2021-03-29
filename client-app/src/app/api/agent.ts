@@ -1,7 +1,8 @@
 import { Activity } from './../Model/activity';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { error } from 'node:console';
 import { toast } from 'react-toastify';
+import { history } from '../..';
+import { keys } from 'mobx';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -20,13 +21,23 @@ axios.interceptors.response.use(
     const { data, status } = error.response!;
     switch (status) {
       case 400:
-        toast.error('bad request');
+        if (data.errors) {
+          const modalStateErrors = [];
+          for (const key in data.errors) {
+            if (data.errors[key]) {
+              modalStateErrors.push(data.errors[key])
+            }
+          }
+          throw modalStateErrors.flat();
+        } else {
+          toast.error(data);
+        }
         break;
       case 401:
         toast.error('unathorized');
         break;
       case 404:
-        toast.error('not-found');
+        history.push('/not-found');
         break;
       case 500:
         toast.error('server error');
