@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import { keys } from 'mobx';
+import { store } from '../store/store';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -18,9 +19,15 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    const { data, status } = error.response!;
+    const { data, status, config } = error.response!;
     switch (status) {
       case 400:
+        if (typeof data === 'string') {
+          toast.error(data);
+        }
+        if (config.method == 'get' && data.errors.hasOwnProperty('id')) {
+          history.push('/not-found');
+        }
         if (data.errors) {
           const modalStateErrors = [];
           for (const key in data.errors) {
@@ -40,7 +47,9 @@ axios.interceptors.response.use(
         history.push('/not-found');
         break;
       case 500:
-        toast.error('server error');
+        store.commonStore.setServerError(data);
+        history.push('/server-error');
+        break;
     }
     return Promise.reject(error);
   }
